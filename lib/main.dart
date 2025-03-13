@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ricyandmorty/app/theme.dart';
+import 'package:ricyandmorty/views/app_view.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,12 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: Scaffold(
-        appBar: AppBar(
-            title: Text('rİCKKY')),
-        body: const Center(
-            child: Text('Hidasfa')),
-      ),
+      home: AppView(),
     );
   }
 }
