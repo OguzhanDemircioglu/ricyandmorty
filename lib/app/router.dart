@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ricyandmorty/views/app_view.dart';
-import 'package:ricyandmorty/views/characters/characters_view.dart';
-import 'package:ricyandmorty/views/favorites/favorites_view.dart';
-import 'package:ricyandmorty/views/locations/locations_view.dart';
-import 'package:ricyandmorty/views/sections/sections_view.dart';
+import 'package:provider/provider.dart';
+import 'package:ricyandmorty/app/views/app_view.dart';
+import 'package:ricyandmorty/app/views/screens/characters/characters_view.dart';
+import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
+import 'package:ricyandmorty/app/views/screens/favorites/favorites_view.dart';
+import 'package:ricyandmorty/app/views/screens/locations/locations_view.dart';
+import 'package:ricyandmorty/app/views/screens/sections/sections_view.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
 
@@ -30,7 +32,11 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.characters,
-              builder: (context, state) => const CharactersView(),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => CharactersViewModel(),
+                    child: const CharactersView(),
+                  ),
             ),
           ],
         ),
