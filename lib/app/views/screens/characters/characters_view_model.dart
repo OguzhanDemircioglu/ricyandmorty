@@ -34,4 +34,14 @@ class CharactersViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void getCharactersByName(String? searchText) async {
+    _charactersModel = null;
+    notifyListeners();
+
+    _charactersModel = await apiService.getCharacters(
+      args: {'name': searchText},
+    );
+    notifyListeners();
+  }
 }

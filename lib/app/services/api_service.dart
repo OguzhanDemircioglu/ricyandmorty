@@ -4,9 +4,15 @@ import 'package:ricyandmorty/app/models/characters_model.dart';
 class ApiService {
   final dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
 
-  Future<CharactersModel> getCharacters({String? url}) async {
+  Future<CharactersModel> getCharacters({
+    String? url,
+    Map<String, dynamic>? args,
+  }) async {
     try {
-      final response = await dio.get(url ?? '/character');
+      final response = await dio.get(
+        url ?? '/character',
+        queryParameters: args,
+      );
 
       if (response.statusCode == 200) {
         return CharactersModel.fromJson(response.data);
