@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
 
-import '../../widgets/character_card_listview.dart';
+import 'character_card_list_view.dart';
 
 class CharactersView extends StatefulWidget {
   const CharactersView({super.key});
@@ -29,7 +29,7 @@ class _CharactersViewState extends State<CharactersView> {
             _searchInputWidget(context, viewmodel: viewModel),
             viewModel.charactersModel == null
                 ? const CircularProgressIndicator.adaptive()
-                : CharacterCardListview(
+                : CharacterCardListView(
                   characters: viewModel.charactersModel!.results,
                   loadMore: () => viewModel.getCharactersMore(),
                 ),

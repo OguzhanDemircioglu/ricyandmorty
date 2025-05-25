@@ -3,8 +3,9 @@ import 'package:ricyandmorty/app/locator.dart';
 import 'package:ricyandmorty/app/router.dart';
 import 'package:ricyandmorty/app/theme.dart';
 
-void main() {
-  setupLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupLocator();
   runApp(MyApp());
 }
 

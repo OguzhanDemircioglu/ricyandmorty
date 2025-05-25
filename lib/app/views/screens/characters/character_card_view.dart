@@ -1,10 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
+import 'package:ricyandmorty/app/services/preferences_service.dart';
 
-class CharacterCardView extends StatelessWidget {
+import '../../../locator.dart';
+
+class CharacterCardView extends StatefulWidget {
   final Character character;
+  final bool isFavorite;
 
-  const CharacterCardView({super.key, required this.character});
+  const CharacterCardView({
+    super.key,
+    required this.character,
+    this.isFavorite = false,
+  });
+
+  @override
+  State<CharacterCardView> createState() => _CharacterCardViewState();
+}
+
+class _CharacterCardViewState extends State<CharacterCardView> {
+  late bool _isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = widget.isFavorite;
+  }
+
+  void _favoriteCharacter() {
+    setState(() {
+      _isFavorite = !_isFavorite;
+
+      if (_isFavorite) {
+        locator<PreferencesService>().saveCharacter(widget.character.id);
+      } else {
+        locator<PreferencesService>().deleteCharacter(widget.character.id);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +57,7 @@ class CharacterCardView extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: Image.network(character.image),
+                  child: Image.network(widget.character.image),
                 ),
                 Flexible(
                   child: Padding(
@@ -36,7 +69,7 @@ class CharacterCardView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          character.name,
+                          widget.character.name,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -45,12 +78,13 @@ class CharacterCardView extends StatelessWidget {
                         SizedBox(height: 5),
                         _infoWidget(
                           type: 'Köken',
-                          value: character.location.name,
+                          value: widget.character.location.name,
                         ),
                         SizedBox(height: 5),
                         _infoWidget(
                           type: 'Durum',
-                          value: '${character.status} - ${character.type}',
+                          value:
+                              '${widget.character.status} - ${widget.character.type}',
                         ),
                       ],
                     ),
@@ -59,7 +93,10 @@ class CharacterCardView extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_border)),
+          IconButton(
+            onPressed: _favoriteCharacter,
+            icon: Icon(_isFavorite ? Icons.bookmark : Icons.bookmark_border),
+          ),
         ],
       ),
     );
