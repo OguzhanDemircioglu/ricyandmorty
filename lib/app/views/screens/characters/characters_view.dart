@@ -21,16 +21,18 @@ class _CharactersViewState extends State<CharactersView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
-          child: Column(
-            children: [
-              _searchInputWidget(context),
-              Consumer<CharactersViewModel>(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
+        child: Column(
+          children: [
+            _searchInputWidget(context),
+            Expanded(
+              child: Consumer<CharactersViewModel>(
                 builder: (context, viewModel, child) {
                   if (viewModel.charactersModel == null) {
-                    return const CircularProgressIndicator.adaptive();
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
                   } else {
                     return CharacterCardListview(
                       characters: viewModel.charactersModel!.results,
@@ -39,8 +41,8 @@ class _CharactersViewState extends State<CharactersView> {
                   }
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

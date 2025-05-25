@@ -1,6 +1,6 @@
 class CharactersModel {
-  late final CharacterInfo info;
-  late final List<Character> results;
+  CharacterInfo info;
+  List<Character> results;
 
   CharactersModel({required this.info, required this.results});
 

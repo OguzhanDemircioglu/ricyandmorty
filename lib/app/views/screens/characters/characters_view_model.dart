@@ -17,13 +17,21 @@ class CharactersViewModel extends ChangeNotifier {
   bool loadMore = false;
 
   void getCharactersMore() async {
-    loadMore = true;
-    final data = await apiService.getCharacters(
-      url: _charactersModel!.info.next,
-    );
-    _charactersModel!.info = data.info;
-    _charactersModel!.results.addAll(data.results);
+    if (loadMore || _charactersModel?.info.next == null) return;
 
+    loadMore = true;
     notifyListeners();
+
+    try {
+      final data = await apiService.getCharacters(
+        url: _charactersModel!.info.next,
+      );
+
+      _charactersModel!.info = data.info;
+      _charactersModel!.results.addAll(data.results);
+    } finally {
+      loadMore = false;
+      notifyListeners();
+    }
   }
 }

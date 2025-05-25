@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
 
@@ -8,6 +6,7 @@ import 'character_card_view.dart';
 class CharacterCardListview extends StatefulWidget {
   final List<Character> characters;
   final VoidCallback loadMore;
+
   const CharacterCardListview({
     super.key,
     required this.characters,
@@ -23,30 +22,41 @@ class _CharacterCardListviewState extends State<CharacterCardListview> {
 
   @override
   void initState() {
-    _detectScrollBottom();
     super.initState();
+    _scroolController.addListener(_onScroll);
   }
 
-  void _detectScrollBottom() {
-    _scroolController.addListener(() {
-      final maxScroll = _scroolController.position.maxScrollExtent;
-      final currentPosition = _scroolController.position.pixels;
-      const int delta = 200;
+  void _onScroll() {
+    final maxScroll = _scroolController.position.maxScrollExtent;
+    final currentScroll = _scroolController.position.pixels;
+    const delta = 200;
 
-      if (maxScroll - currentPosition <= delta) {
-        log("alta gel");
-      }
-    });
+    if (maxScroll - currentScroll <= delta) {
+      widget.loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scroolController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return Expanded(
       child: ListView.builder(
+        controller: _scroolController,
         itemCount: widget.characters.length,
         itemBuilder: (context, index) {
           final character = widget.characters[index];
-          return CharacterCardView(character: character);
+          return Column(
+            children: [
+              CharacterCardView(character: character),
+              if (index == widget.characters.length - 1)
+                const CircularProgressIndicator.adaptive(),
+            ],
+          );
         },
       ),
     );

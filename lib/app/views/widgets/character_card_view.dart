@@ -26,32 +26,34 @@ class CharacterCardView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                   child: Image.network(character.image),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 6,
-                    horizontal: 17,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        character.name,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 17,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          character.name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 5),
-                      _infoWidget(
-                        type: 'Köken',
-                        value: character.location.name,
-                      ),
-                      SizedBox(height: 5),
-                      _infoWidget(
-                        type: 'Durum',
-                        value: '${character.status} - ${character.type}',
-                      ),
-                    ],
+                        SizedBox(height: 5),
+                        _infoWidget(
+                          type: 'Köken',
+                          value: character.location.name,
+                        ),
+                        SizedBox(height: 5),
+                        _infoWidget(
+                          type: 'Durum',
+                          value: '${character.status} - ${character.type}',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -68,7 +70,12 @@ class CharacterCardView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(type, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w300)),
-        Text(value, style: TextStyle(fontWeight: FontWeight.w300)),
+        Text(
+          value,
+          style: TextStyle(fontWeight: FontWeight.w100, fontSize: 12),
+          softWrap: true,
+          overflow: TextOverflow.ellipsis,
+        ),
       ],
     );
   }
