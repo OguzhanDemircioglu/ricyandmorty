@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:ricyandmorty/app/models/characters_model.dart';
 import 'package:ricyandmorty/app/views/app_view.dart';
+import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view.dart';
@@ -18,6 +20,8 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String locations = '/locations';
   static const String sections = '/sections';
+  static const String characterDetail = 'characterDetail';
+  static const String characterDetailRoute = '/characterDetail';
 }
 
 final router = GoRouter(
@@ -38,6 +42,14 @@ final router = GoRouter(
                     create: (context) => CharactersViewModel(),
                     child: const CharactersView(),
                   ),
+              routes: [
+                GoRoute(
+                  path: AppRoutes.characterDetail,
+                  builder:
+                      (context, state) =>
+                          CharacterDetail(character: state.extra as Character),
+                ),
+              ],
             ),
           ],
         ),

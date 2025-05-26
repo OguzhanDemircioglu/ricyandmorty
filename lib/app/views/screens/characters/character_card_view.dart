@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
+import 'package:ricyandmorty/app/router.dart';
 import 'package:ricyandmorty/app/services/preferences_service.dart';
 
 import '../../../locator.dart';
@@ -41,63 +43,70 @@ class _CharacterCardViewState extends State<CharacterCardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 9),
-      child: Stack(
-        alignment: Alignment.topRight,
-        children: [
-          Container(
-            height: 120,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: Image.network(widget.character.image),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 6,
-                      horizontal: 17,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.character.name,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap:
+          () => context.push(
+            AppRoutes.characterDetailRoute,
+            extra: widget.character,
+          ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 9),
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              height: 120,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.network(widget.character.image),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 6,
+                        horizontal: 17,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.character.name,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        _infoWidget(
-                          type: 'Köken',
-                          value: widget.character.location.name,
-                        ),
-                        SizedBox(height: 5),
-                        _infoWidget(
-                          type: 'Durum',
-                          value:
-                              '${widget.character.status} - ${widget.character.type}',
-                        ),
-                      ],
+                          SizedBox(height: 5),
+                          _infoWidget(
+                            type: 'Köken',
+                            value: widget.character.location.name,
+                          ),
+                          SizedBox(height: 5),
+                          _infoWidget(
+                            type: 'Durum',
+                            value:
+                                '${widget.character.status} - ${widget.character.type}',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: _favoriteCharacter,
-            icon: Icon(_isFavorite ? Icons.bookmark : Icons.bookmark_border),
-          ),
-        ],
+            IconButton(
+              onPressed: _favoriteCharacter,
+              icon: Icon(_isFavorite ? Icons.bookmark : Icons.bookmark_border),
+            ),
+          ],
+        ),
       ),
     );
   }

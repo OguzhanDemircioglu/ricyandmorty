@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
 
+import '../../appbar_view.dart';
 import 'character_card_list_view.dart';
 
 class CharactersView extends StatefulWidget {
@@ -22,6 +23,7 @@ class _CharactersViewState extends State<CharactersView> {
   Widget build(BuildContext context) {
     final viewModel = context.watch<CharactersViewModel>();
     return Scaffold(
+      appBar: AppbarView(title: 'Rick and Morty'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 12),
         child: Column(
