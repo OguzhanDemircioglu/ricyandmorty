@@ -7,12 +7,12 @@ import 'character_card_view.dart';
 
 class CharacterCardListView extends StatefulWidget {
   final List<Character> characters;
-  final VoidCallback loadMore;
+  final VoidCallback? loadMore;
 
   const CharacterCardListView({
     super.key,
     required this.characters,
-    required this.loadMore,
+    this.loadMore,
   });
 
   @override
@@ -23,6 +23,7 @@ class _CharacterCardListViewState extends State<CharacterCardListView> {
   final _scrollController = ScrollController();
   List<int> _favoriteList = [];
   bool loader = true;
+  bool isPaginationLoading = false;
 
   @override
   void initState() {
@@ -32,18 +33,30 @@ class _CharacterCardListViewState extends State<CharacterCardListView> {
   }
 
   void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
-    const delta = 200;
+    if (widget.loadMore != null && !isPaginationLoading) {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      const delta = 200;
 
-    if (maxScroll - currentScroll <= delta) {
-      widget.loadMore();
+      if (maxScroll - currentScroll <= delta) {
+        setState(() {
+          isPaginationLoading = true;
+        });
+        widget.loadMore!();
+      }
     }
   }
 
   void _closeLoader() {
-    loader = false;
-    setState(() {});
+    setState(() {
+      loader = false;
+    });
+  }
+
+  void stopPaginationLoader() {
+    setState(() {
+      isPaginationLoading = false;
+    });
   }
 
   void _getFavorites() async {
@@ -60,25 +73,29 @@ class _CharacterCardListViewState extends State<CharacterCardListView> {
   @override
   Widget build(BuildContext context) {
     if (loader) {
-      return const CircularProgressIndicator.adaptive();
-    } else {
-      return Expanded(
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: widget.characters.length,
-          itemBuilder: (context, index) {
-            final character = widget.characters[index];
-            final bool isFavorite = _favoriteList.contains(character.id);
-            return Column(
-              children: [
-                CharacterCardView(character: character, isFavorite: isFavorite),
-                if (index == widget.characters.length - 1)
-                  const CircularProgressIndicator.adaptive(),
-              ],
-            );
-          },
-        ),
-      );
+      return const Center(child: CircularProgressIndicator.adaptive());
     }
+
+    return Expanded(
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: widget.characters.length + (isPaginationLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == widget.characters.length) {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Center(child: CircularProgressIndicator.adaptive()),
+            );
+          }
+
+          final character = widget.characters[index];
+          final bool isFavorite = _favoriteList.contains(character.id);
+          return CharacterCardView(
+            character: character,
+            isFavorite: isFavorite,
+          );
+        },
+      ),
+    );
   }
 }

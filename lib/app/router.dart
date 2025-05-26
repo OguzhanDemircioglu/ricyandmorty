@@ -5,6 +5,7 @@ import 'package:ricyandmorty/app/views/app_view.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view.dart';
+import 'package:ricyandmorty/app/views/screens/favorites/favorites_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/locations/locations_view.dart';
 import 'package:ricyandmorty/app/views/screens/sections/sections_view.dart';
 
@@ -44,7 +45,11 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.favorites,
-              builder: (context, state) => const FavoritesView(),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => FavoritesViewModel(),
+                    child: const FavoritesView(),
+                  ),
             ),
           ],
         ),
