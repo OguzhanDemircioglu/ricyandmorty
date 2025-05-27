@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
 import 'package:ricyandmorty/app/views/app_view.dart';
-import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail.dart';
+import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view.dart';
+import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view.dart';
@@ -46,8 +47,12 @@ final router = GoRouter(
                 GoRoute(
                   path: AppRoutes.characterDetail,
                   builder:
-                      (context, state) =>
-                          CharacterDetail(character: state.extra as Character),
+                      (context, state) => ChangeNotifierProvider(
+                        create: (context) => CharacterDetailViewModel(),
+                        child: CharacterDetailView(
+                          character: state.extra as Character,
+                        ),
+                      ),
                 ),
               ],
             ),

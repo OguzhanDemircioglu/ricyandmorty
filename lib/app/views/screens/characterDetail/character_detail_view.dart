@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
+import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view_model.dart';
 
+import '../../../models/episode_model.dart';
 import '../../appbar_view.dart';
 
-class CharacterDetail extends StatelessWidget {
+class CharacterDetailView extends StatefulWidget {
   final Character character;
 
-  const CharacterDetail({super.key, required this.character});
+  const CharacterDetailView({super.key, required this.character});
+
+  @override
+  State<CharacterDetailView> createState() => _CharacterDetailView();
+}
+
+class _CharacterDetailView extends State<CharacterDetailView> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<CharacterDetailViewModel>().getEpisodes(
+      widget.character.episode,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +57,7 @@ class CharacterDetail extends StatelessWidget {
                     children: [
                       const SizedBox(height: 13),
                       Text(
-                        character.name,
+                        widget.character.name,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -49,6 +65,10 @@ class CharacterDetail extends StatelessWidget {
                       ),
                       const SizedBox(height: 15),
                       _skilView(context),
+                      const SizedBox(height: 15),
+                      _scenesTitle(),
+                      const SizedBox(height: 15),
+                      _episodeTitles(),
                     ],
                   ),
                 ),
@@ -60,16 +80,58 @@ class CharacterDetail extends StatelessWidget {
     );
   }
 
+  Flexible _episodeTitles() {
+    return Flexible(
+      child: Consumer<CharacterDetailViewModel>(
+        builder: (context, viewModel, child) {
+          return ListView.separated(
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              final EpisodeModel model = viewModel.episodes[index];
+              return ListTile(
+                leading: const Icon(Icons.face_retouching_natural_rounded),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                title: Text(
+                  model.episode,
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                subtitle: Text(model.name, style: TextStyle(fontSize: 12)),
+              );
+            },
+            separatorBuilder:
+                (context, index) => Divider(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  indent: 30,
+                  endIndent: 30,
+                ),
+            itemCount: viewModel.episodes.length,
+          );
+        },
+      ),
+    );
+  }
+
+  Container _scenesTitle() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.symmetric(horizontal: 18),
+      child: Text(
+        'Episodes ${widget.character.episode.length}',
+        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
   Padding _skilView(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 39),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Wrap(
         alignment: WrapAlignment.center,
         children: [
-          _skill(context, character.status),
-          _skill(context, character.origin.name),
-          _skill(context, character.gender),
-          _skill(context, character.species),
+          _skill(context, widget.character.status),
+          _skill(context, widget.character.origin.name),
+          _skill(context, widget.character.gender),
+          _skill(context, widget.character.species),
         ],
       ),
     );
@@ -97,7 +159,7 @@ class CharacterDetail extends StatelessWidget {
           radius: 100,
           backgroundColor: Theme.of(context).colorScheme.primary,
           child: CircleAvatar(
-            backgroundImage: NetworkImage(character.image),
+            backgroundImage: NetworkImage(widget.character.image),
             radius: 95,
           ),
         ),

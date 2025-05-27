@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
+import 'package:ricyandmorty/app/models/episode_model.dart';
 
 class ApiService {
   final dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
@@ -37,6 +38,25 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error fetching characters: $e');
+    }
+  }
+
+  Future<List<EpisodeModel>> getMultipleEpisodes(List<String> idList) async {
+    try {
+      final List<String> episodeNumbers =
+          idList.map((e) => e.split('/').last).toList();
+
+      final response = await dio.get('/episode/${episodeNumbers.join(",")}');
+
+      if (response.statusCode == 200) {
+        return (response.data as List)
+            .map((e) => EpisodeModel.fromJson(e))
+            .toList();
+      } else {
+        throw Exception('Failed to load Episodes: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching Episodes: $e');
     }
   }
 }
