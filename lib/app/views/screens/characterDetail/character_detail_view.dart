@@ -5,6 +5,7 @@ import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_
 
 import '../../../models/episode_model.dart';
 import '../../appbar_view.dart';
+import '../../decorated_view.dart';
 
 class CharacterDetailView extends StatefulWidget {
   final Character character;
@@ -33,48 +34,37 @@ class _CharacterDetailView extends State<CharacterDetailView> {
           title: 'Character Detail',
           transparentBackground: true,
         ),
-        body: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/bg-image.png'),
-              alignment: Alignment.topCenter,
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+        body: DecoratedView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _characterAvatar(context),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface,
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(50),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 13),
-                      Text(
-                        widget.character.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      _skilView(context),
-                      const SizedBox(height: 15),
-                      _scenesTitle(),
-                      const SizedBox(height: 15),
-                      _episodeTitles(),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            children: [_characterAvatar(context), _characterContent(context)],
           ),
+        ),
+      ),
+    );
+  }
+
+  Expanded _characterContent(BuildContext context) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(50)),
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 13),
+            Text(
+              widget.character.name,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 15),
+            _skilView(context),
+            const SizedBox(height: 15),
+            _scenesTitle(),
+            const SizedBox(height: 15),
+            _episodeTitles(),
+          ],
         ),
       ),
     );
@@ -158,9 +148,12 @@ class _CharacterDetailView extends State<CharacterDetailView> {
         child: CircleAvatar(
           radius: 100,
           backgroundColor: Theme.of(context).colorScheme.primary,
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(widget.character.image),
-            radius: 95,
+          child: Hero(
+            tag: widget.character.image,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.character.image),
+              radius: 95,
+            ),
           ),
         ),
       ),

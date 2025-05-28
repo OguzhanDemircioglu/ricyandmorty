@@ -65,7 +65,10 @@ class _CharacterCardViewState extends State<CharacterCardView> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(6),
-                    child: Image.network(widget.character.image),
+                    child: Hero(
+                      tag: widget.character.image,
+                      child: Image.network(widget.character.image),
+                    ),
                   ),
                   Flexible(
                     child: Padding(

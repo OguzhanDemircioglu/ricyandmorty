@@ -10,6 +10,7 @@ import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view.dart';
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/locations/locations_view.dart';
+import 'package:ricyandmorty/app/views/screens/locations/locations_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/sections/sections_view.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
@@ -74,7 +75,11 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.locations,
-              builder: (context, state) => const LocationsView(),
+              builder:
+                  (context, state) => ChangeNotifierProvider(
+                    create: (context) => LocationsViewModel(),
+                    child: const LocationsView(),
+                  ),
             ),
           ],
         ),
