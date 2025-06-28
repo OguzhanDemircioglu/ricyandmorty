@@ -32,7 +32,7 @@ class _CharactersViewState extends State<CharactersView> {
             viewModel.charactersModel == null
                 ? const CircularProgressIndicator.adaptive()
                 : CharacterCardListView(
-                  characters: viewModel.charactersModel!.results,
+                  characters: viewModel.charactersModel!.characters,
                   loadMore: () => viewModel.getCharactersMore(),
                 ),
           ],

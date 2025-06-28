@@ -6,7 +6,7 @@ import 'package:ricyandmorty/app/services/preferences_service.dart';
 import 'character_card_view.dart';
 
 class CharacterCardListView extends StatefulWidget {
-  final List<Character> characters;
+  final List<CharacterModel> characters;
   final VoidCallback? loadMore;
 
   const CharacterCardListView({
@@ -60,7 +60,7 @@ class _CharacterCardListViewState extends State<CharacterCardListView> {
   }
 
   void _getFavorites() async {
-    _favoriteList = locator<PreferencesService>().getCharactersFromCache();
+    _favoriteList = locator<PreferencesService>().getSavedCharacters();
     _closeLoader();
   }
 

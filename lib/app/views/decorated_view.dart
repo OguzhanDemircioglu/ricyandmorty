@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class DecoratedView extends StatelessWidget {
+class DecoratedContainer extends StatelessWidget {
+  final Widget topChild;
   final Widget child;
-  const DecoratedView({super.key, required this.child});
+  const DecoratedContainer({
+    super.key,
+    required this.topChild,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,23 @@ class DecoratedView extends StatelessWidget {
           fit: BoxFit.fitWidth,
         ),
       ),
-      child: child,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          topChild,
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(50),
+                ),
+              ),
+              child: child,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

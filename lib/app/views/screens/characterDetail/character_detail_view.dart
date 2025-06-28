@@ -8,7 +8,7 @@ import '../../appbar_view.dart';
 import '../../decorated_view.dart';
 
 class CharacterDetailView extends StatefulWidget {
-  final Character character;
+  final CharacterModel character;
 
   const CharacterDetailView({super.key, required this.character});
 
@@ -34,11 +34,9 @@ class _CharacterDetailView extends State<CharacterDetailView> {
           title: 'Character Detail',
           transparentBackground: true,
         ),
-        body: DecoratedView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [_characterAvatar(context), _characterContent(context)],
-          ),
+        body: DecoratedContainer(
+          topChild: _characterAvatar(context),
+          child: _characterContent(context),
         ),
       ),
     );

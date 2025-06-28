@@ -51,7 +51,7 @@ final router = GoRouter(
                       (context, state) => ChangeNotifierProvider(
                         create: (context) => CharacterDetailViewModel(),
                         child: CharacterDetailView(
-                          character: state.extra as Character,
+                          character: state.extra as CharacterModel,
                         ),
                       ),
                 ),
@@ -65,8 +65,8 @@ final router = GoRouter(
               path: AppRoutes.favorites,
               builder:
                   (context, state) => ChangeNotifierProvider(
-                    create: (context) => FavoritesViewModel(),
-                    child: const FavoritesView(),
+                    create: (context) => FavouritesViewmodel(),
+                    child: const FavouritesView(),
                   ),
             ),
           ],
@@ -77,7 +77,7 @@ final router = GoRouter(
               path: AppRoutes.locations,
               builder:
                   (context, state) => ChangeNotifierProvider(
-                    create: (context) => LocationsViewModel(),
+                    create: (context) => LocationViewmodel(),
                     child: const LocationsView(),
                   ),
             ),

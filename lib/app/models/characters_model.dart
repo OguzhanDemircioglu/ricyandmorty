@@ -1,110 +1,55 @@
-class CharactersModel {
-  CharacterInfo info;
-  List<Character> results;
+import 'info_model.dart';
 
-  CharactersModel({required this.info, required this.results});
+class CharactersModel {
+  InfoModel info;
+  final List<CharacterModel> characters;
+
+  CharactersModel({required this.info, required this.characters});
 
   factory CharactersModel.fromJson(Map<String, dynamic> json) {
-    return CharactersModel(
-      info: CharacterInfo.fromJson(json['info']),
-      results:
-          (json['results'] as List)
-              .map((item) => Character.fromJson(item))
-              .toList(),
-    );
-  }
+    final info = InfoModel.fromMap(json['info']);
+    final characters =
+        (json['results'] as List)
+            .map((characterJson) => CharacterModel.fromJson(characterJson))
+            .toList();
 
-  Map<String, dynamic> toJson() => {
-    'info': info.toJson(),
-    'results': results.map((c) => c.toJson()).toList(),
-  };
+    return CharactersModel(info: info, characters: characters);
+  }
 }
 
-class CharacterInfo {
-  final int count;
-  final int pages;
-  final String? next;
-  final String? prev;
-
-  CharacterInfo(this.count, this.pages, this.next, this.prev);
-
-  factory CharacterInfo.fromJson(Map<String, dynamic> json) {
-    return CharacterInfo(
-      json['count'],
-      json['pages'],
-      json['next'],
-      json['prev'],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-    'count': count,
-    'pages': pages,
-    'next': next,
-    'prev': prev,
-  };
-}
-
-class Character {
+class CharacterModel {
   final int id;
   final String name;
   final String status;
   final String species;
-  final String type;
   final String gender;
-  final Location origin;
-  final Location location;
   final String image;
+  final Location location;
+  final Origin origin;
   final List<String> episode;
-  final String url;
-  final String created;
 
-  Character({
+  CharacterModel({
     required this.id,
     required this.name,
     required this.status,
     required this.species,
-    required this.type,
     required this.gender,
-    required this.origin,
-    required this.location,
     required this.image,
+    required this.location,
+    required this.origin,
     required this.episode,
-    required this.url,
-    required this.created,
   });
 
-  factory Character.fromJson(Map<String, dynamic> json) {
-    return Character(
-      id: json['id'],
-      name: json['name'],
-      status: json['status'],
-      species: json['species'],
-      type: json['type'],
-      gender: json['gender'],
-      origin: Location.fromJson(json['origin']),
-      location: Location.fromJson(json['location']),
-      image: json['image'],
-      episode: List<String>.from(json['episode']),
-      url: json['url'],
-      created: json['created'],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'status': status,
-    'species': species,
-    'type': type,
-    'gender': gender,
-    'origin': origin.toJson(),
-    'location': location.toJson(),
-    'image': image,
-    'episode': episode,
-    'url': url,
-    'created': created,
-  };
+  CharacterModel.fromJson(Map<String, dynamic> json)
+    : id = json['id'],
+      name = json['name'],
+      status = json['status'],
+      species = json['species'],
+      gender = json['gender'],
+      image = json['image'],
+      location = Location.fromJson(json['location']),
+      origin = Origin.fromJson(json['origin']),
+      episode = List<String>.from(json['episode']);
 }
 
 class Location {
@@ -113,9 +58,18 @@ class Location {
 
   Location({required this.name, required this.url});
 
-  factory Location.fromJson(Map<String, dynamic> json) {
-    return Location(name: json['name'], url: json['url']);
-  }
+  Location.fromJson(Map<String, dynamic> json)
+    : name = json['name'],
+      url = json['url'];
+}
 
-  Map<String, dynamic> toJson() => {'name': name, 'url': url};
+class Origin {
+  final String name;
+  final String url;
+
+  Origin({required this.name, required this.url});
+
+  Origin.fromJson(Map<String, dynamic> json)
+    : name = json['name'],
+      url = json['url'];
 }

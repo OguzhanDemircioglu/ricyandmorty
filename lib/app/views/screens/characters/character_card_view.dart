@@ -7,7 +7,7 @@ import 'package:ricyandmorty/app/services/preferences_service.dart';
 import '../../../locator.dart';
 
 class CharacterCardView extends StatefulWidget {
-  final Character character;
+  final CharacterModel character;
   final bool isFavorite;
 
   const CharacterCardView({
@@ -95,7 +95,7 @@ class _CharacterCardViewState extends State<CharacterCardView> {
                           _infoWidget(
                             type: 'Durum',
                             value:
-                                '${widget.character.status} - ${widget.character.type}',
+                                '${widget.character.status} - ${widget.character.gender}',
                           ),
                         ],
                       ),

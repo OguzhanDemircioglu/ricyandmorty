@@ -23,8 +23,8 @@ class PreferencesService {
     storeCharacters(characterList);
   }
 
-  List<int> getCharactersFromCache() {
-    final characterList = prefs.getStringList(_characterKey) ?? [];
-    return characterList.map((e) => int.parse(e)).toList();
+  List<int> getSavedCharacters() {
+    final charactersList = prefs.getStringList(_characterKey) ?? [];
+    return charactersList.map((e) => int.parse(e)).toList();
   }
 }

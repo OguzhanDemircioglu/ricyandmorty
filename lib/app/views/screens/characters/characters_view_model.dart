@@ -28,7 +28,7 @@ class CharactersViewModel extends ChangeNotifier {
       );
 
       _charactersModel!.info = data.info;
-      _charactersModel!.results.addAll(data.results);
+      _charactersModel!.characters.addAll(data.characters);
     } finally {
       loadMore = false;
       notifyListeners();

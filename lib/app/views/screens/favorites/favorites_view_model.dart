@@ -4,21 +4,22 @@ import 'package:ricyandmorty/app/models/characters_model.dart';
 import 'package:ricyandmorty/app/services/api_service.dart';
 import 'package:ricyandmorty/app/services/preferences_service.dart';
 
-class FavoritesViewModel extends ChangeNotifier {
+class FavouritesViewmodel extends ChangeNotifier {
   final _preferencesService = locator<PreferencesService>();
   final _apiService = locator<ApiService>();
-  List<int> _favorites = [];
-  List<Character> _characters = [];
 
-  List<Character> get characters => _characters;
+  List<int> _favourites = [];
+  List<CharacterModel> _characters = [];
 
-  void getFavorites() {
-    _favorites = _preferencesService.getCharactersFromCache();
+  List<CharacterModel> get characters => _characters;
+
+  void getFavourites() {
+    _favourites = _preferencesService.getSavedCharacters();
     _getCharacters();
   }
 
   void _getCharacters() async {
-    _characters = await _apiService.getMultipleCharacters(_favorites);
+    _characters = await _apiService.getMultipleCharacters(_favourites);
     notifyListeners();
   }
 }

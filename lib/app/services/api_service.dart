@@ -1,62 +1,88 @@
 import 'package:dio/dio.dart';
-import 'package:ricyandmorty/app/models/characters_model.dart';
-import 'package:ricyandmorty/app/models/episode_model.dart';
+
+import '../models/characters_model.dart';
+import '../models/episode_model.dart';
+import '../models/location_model.dart';
 
 class ApiService {
-  final dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
+  final _dio = Dio(BaseOptions(baseUrl: 'https://rickandmortyapi.com/api'));
 
   Future<CharactersModel> getCharacters({
     String? url,
     Map<String, dynamic>? args,
   }) async {
     try {
-      final response = await dio.get(
+      final response = await _dio.get(
         url ?? '/character',
         queryParameters: args,
       );
-
-      if (response.statusCode == 200) {
-        return CharactersModel.fromJson(response.data);
-      } else {
-        throw Exception('Failed to load characters: ${response.statusCode}');
-      }
+      return CharactersModel.fromJson(response.data);
     } catch (e) {
-      throw Exception('Error fetching characters: $e');
+      rethrow;
     }
   }
 
-  Future<List<Character>> getMultipleCharacters(List<int> idList) async {
+  Future<List<CharacterModel>> getMultipleCharacters(List<int> idList) async {
     try {
-      final response = await dio.get('/character/${idList.join(",")}');
+      final response = await _dio.get('/character/${idList.join(',')}');
+      final data = response.data;
 
-      if (response.statusCode == 200) {
-        return (response.data as List)
-            .map((e) => Character.fromJson(e))
-            .toList();
+      if (data is List) {
+        return data.map((e) => CharacterModel.fromJson(e)).toList();
+      } else if (data is Map<String, dynamic>) {
+        return [CharacterModel.fromJson(data)];
       } else {
-        throw Exception('Failed to load characters: ${response.statusCode}');
+        throw Exception('Unexpected response format: ${data.runtimeType}');
       }
     } catch (e) {
-      throw Exception('Error fetching characters: $e');
+      rethrow;
     }
   }
 
-  Future<List<EpisodeModel>> getMultipleEpisodes(List<String> idList) async {
+  Future<EpisodesModel> getAllEpisodes({String? url}) async {
+    try {
+      final response = await _dio.get(url ?? '/episode');
+      return EpisodesModel.fromMap(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<EpisodeModel>> getMultipleEpisodes(List<String> list) async {
     try {
       final List<String> episodeNumbers =
-          idList.map((e) => e.split('/').last).toList();
+          list.map((e) => e.split('/').last).toList();
 
-      final response = await dio.get('/episode/${episodeNumbers.join(",")}');
+      String episodes = episodeNumbers.join(',');
+      if (list.length == 1) episodes = '$episodes,';
 
-      if (response.statusCode == 200) {
-        return (response.data as List)
-            .map((e) => EpisodeModel.fromJson(e))
-            .toList();
-      } else {
-        throw Exception('Failed to load Episodes: ${response.statusCode}');
-      }
+      final response = await _dio.get('/episode/$episodes');
+      return (response.data as List)
+          .map((e) => EpisodeModel.fromMap(e))
+          .toList();
     } catch (e) {
-      throw Exception('Error fetching Episodes: $e');
+      rethrow;
+    }
+  }
+
+  Future<LocationModel> getAllLocations({String? url}) async {
+    try {
+      final response = await _dio.get(url ?? '/location');
+      return LocationModel.fromMap(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<CharacterModel>> getCharactersFromUrlList(
+    List<String> residentsUrl,
+  ) async {
+    final List<int> idList =
+        residentsUrl.map((e) => int.parse(e.split('/').last)).toList();
+    try {
+      return await getMultipleCharacters(idList);
+    } catch (e) {
+      rethrow;
     }
   }
 }
