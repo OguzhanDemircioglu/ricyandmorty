@@ -4,8 +4,8 @@ import 'package:ricyandmorty/app/models/characters_model.dart';
 import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view_model.dart';
 
 import '../../../models/episode_model.dart';
-import '../../appbar_view.dart';
-import '../../decorated_view.dart';
+import '../utils/appbar_view.dart';
+import '../utils/decorated_view.dart';
 
 class CharacterDetailView extends StatefulWidget {
   final CharacterModel character;

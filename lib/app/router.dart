@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
-import 'package:ricyandmorty/app/views/app_view.dart';
+import 'package:ricyandmorty/app/models/location_model.dart';
 import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view.dart';
 import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view.dart';
@@ -11,7 +11,10 @@ import 'package:ricyandmorty/app/views/screens/favorites/favorites_view.dart';
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/locations/locations_view.dart';
 import 'package:ricyandmorty/app/views/screens/locations/locations_view_model.dart';
+import 'package:ricyandmorty/app/views/screens/resident/resident_view.dart';
+import 'package:ricyandmorty/app/views/screens/resident/resident_view_model.dart';
 import 'package:ricyandmorty/app/views/screens/sections/sections_view.dart';
+import 'package:ricyandmorty/app/views/screens/utils/app_view.dart';
 
 final _routerKey = GlobalKey<NavigatorState>();
 
@@ -24,6 +27,9 @@ class AppRoutes {
   static const String sections = '/sections';
   static const String characterDetail = 'characterDetail';
   static const String characterDetailRoute = '/characterDetail';
+
+  static const String residentsRoute = 'residents';
+  static const String residents = '/locations/residents';
 }
 
 final router = GoRouter(
@@ -80,6 +86,18 @@ final router = GoRouter(
                     create: (context) => LocationViewmodel(),
                     child: const LocationsView(),
                   ),
+              routes: [
+                GoRoute(
+                  path: AppRoutes.residentsRoute,
+                  builder:
+                      (context, state) => ChangeNotifierProvider(
+                        create: (context) => ResidentViewModel(),
+                        child: ResidentsView(
+                          locationItem: state.extra as LocationItem,
+                        ),
+                      ),
+                ),
+              ],
             ),
           ],
         ),

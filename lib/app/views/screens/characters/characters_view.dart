@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/views/screens/characters/characters_view_model.dart';
 
-import '../../appbar_view.dart';
+import '../utils/appbar_view.dart';
 import 'character_card_list_view.dart';
 
 class CharactersView extends StatefulWidget {

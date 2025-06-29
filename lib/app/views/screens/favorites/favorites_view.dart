@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/views/screens/favorites/favorites_view_model.dart';
 
-import '../../appbar_view.dart';
 import '../characters/character_card_list_view.dart';
+import '../utils/appbar_view.dart';
 
 class FavouritesView extends StatefulWidget {
   const FavouritesView({super.key});

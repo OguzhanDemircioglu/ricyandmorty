@@ -53,7 +53,7 @@ class _LocationListViewState extends State<LocationListView> {
         return Column(
           children: [
             ListTile(
-              onTap: () => context.push(AppRoutes.locations, extra: location),
+              onTap: () => context.push(AppRoutes.residents, extra: location),
               leading: const Icon(Icons.location_on),
               trailing: const Icon(Icons.keyboard_arrow_right),
               title: Text(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../appbar_view.dart';
-import '../../decorated_view.dart';
+import '../utils/appbar_view.dart';
+import '../utils/decorated_view.dart';
 import 'locations_list_view.dart';
 import 'locations_view_model.dart';
 
