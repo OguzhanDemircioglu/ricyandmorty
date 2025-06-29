@@ -29,7 +29,7 @@ class _FavouritesViewState extends State<FavouritesView> {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child:
               viewModel.characters.isEmpty
-                  ? const CircularProgressIndicator.adaptive()
+                  ? const Text("Favori Seçilmedi")
                   : Column(
                     children: [
                       CharacterCardListView(characters: viewModel.characters),

@@ -3,8 +3,14 @@ import 'package:go_router/go_router.dart';
 
 class AppView extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
-
   const AppView({super.key, required this.navigationShell});
+
+  void _goBranch(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,35 +28,35 @@ class AppView extends StatelessWidget {
         child: NavigationBar(
           selectedIndex: navigationShell.currentIndex,
           indicatorColor: Colors.transparent,
-          onDestinationSelected: (index) => navigationShell.goBranch(index),
+          onDestinationSelected: _goBranch,
           destinations: [
             _menuItem(
               context,
               index: 0,
               currentIndex: navigationShell.currentIndex,
-              label: 'Karakterler',
               icon: Icons.face,
+              label: 'Karakterler',
             ),
             _menuItem(
               context,
               index: 1,
               currentIndex: navigationShell.currentIndex,
-              label: 'Favorilerim',
               icon: Icons.bookmark,
+              label: 'Favorilerim',
             ),
             _menuItem(
               context,
               index: 2,
               currentIndex: navigationShell.currentIndex,
-              label: 'Konumlar',
               icon: Icons.location_on,
+              label: 'Konumlar',
             ),
             _menuItem(
               context,
               index: 3,
               currentIndex: navigationShell.currentIndex,
-              label: 'Menü',
               icon: Icons.menu,
+              label: 'Bölümler',
             ),
           ],
         ),
@@ -71,7 +77,7 @@ class AppView extends StatelessWidget {
         color:
             currentIndex == index
                 ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
+                : Theme.of(context).colorScheme.tertiary,
       ),
       label: label,
     );

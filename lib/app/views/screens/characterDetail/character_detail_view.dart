@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ricyandmorty/app/models/characters_model.dart';
 import 'package:ricyandmorty/app/views/screens/characterDetail/character_detail_view_model.dart';
+import 'package:ricyandmorty/app/views/screens/utils/episode_list_view.dart';
 
-import '../../../models/episode_model.dart';
 import '../utils/appbar_view.dart';
 import '../utils/decorated_view.dart';
 
@@ -72,28 +72,7 @@ class _CharacterDetailView extends State<CharacterDetailView> {
     return Flexible(
       child: Consumer<CharacterDetailViewModel>(
         builder: (context, viewModel, child) {
-          return ListView.separated(
-            padding: EdgeInsets.zero,
-            itemBuilder: (context, index) {
-              final EpisodeModel model = viewModel.episodes[index];
-              return ListTile(
-                leading: const Icon(Icons.face_retouching_natural_rounded),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                title: Text(
-                  model.episode,
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                subtitle: Text(model.name, style: TextStyle(fontSize: 12)),
-              );
-            },
-            separatorBuilder:
-                (context, index) => Divider(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  indent: 30,
-                  endIndent: 30,
-                ),
-            itemCount: viewModel.episodes.length,
-          );
+          return EpisodeListView(episodes: viewModel.episodes);
         },
       ),
     );
